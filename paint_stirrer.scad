@@ -5,8 +5,10 @@
 
 // Variables
 
-cShaftDia = 8; // Shaft diameter
-cShaftLen = 100; // Shaft length
+// Shaft diameter
+cShaftDia = 8; 
+// Shaft length, including the blades
+cShaftLen = 100; 
 cBladeDia = 50; // Blade diameter
 cBladeThick = 5; // Blade thickness
 cBladeLen = 50; // Blade length
@@ -14,6 +16,9 @@ cBladeHoleDia = 14; // Blade hole diameter
 cRefine = 32; // Refinement level
 cBladeOffset = 1; //to adjust for the blade position after rotation
 cSweepAngle = -3.5; // Sweep angle for the blade
+cBaseDia = 30; // Base diameter
+cBaseThick = 3; // Base thickness
+cBaseSweepThick = 20; // Base sweep thickness
 cBladePoints = [
     [0, 0],
     [cBladeLen, 0],
@@ -43,6 +48,14 @@ module blade() {
     }
 }
 
+module base() {
+    cylinder(d = cBaseDia, h = cBaseThick, $fn=cRefine);
+    translate([0, 0, cBaseThick]) {
+        cylinder(d1 = cBaseDia, d2 = cShaftDia, cBaseSweepThick, $fn=cRefine);
+    }
+}
+
+// Main
 shaft();
 translate([0, cBladeOffset, 0]) {
     rotate([cSweepAngle, 0, 0]) {
@@ -56,3 +69,4 @@ translate([0, -cBladeOffset, 0]) {
         }
     }
 }
+base();
