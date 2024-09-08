@@ -1,6 +1,6 @@
 // 2024-09-08 adam mead
 //
-// Paint Stirrer
+// Paint Stirrer, 3d printable
 //
 
 // Variables
@@ -10,10 +10,10 @@ cShaftLen = 100; // Shaft length
 cBladeDia = 50; // Blade diameter
 cBladeThick = 5; // Blade thickness
 cBladeLen = 50; // Blade length
-cBladeHoleDia = 10; // Blade hole diameter
+cBladeHoleDia = 14; // Blade hole diameter
 cRefine = 32; // Refinement level
 cBladeOffset = 1; //to adjust for the blade position after rotation
-
+cSweepAngle = -3.5; // Sweep angle for the blade
 cBladePoints = [
     [0, 0],
     [cBladeLen, 0],
@@ -35,7 +35,9 @@ module blade() {
                 polygon(points = cBladePoints);
             }
             translate([cBladeLen / 2, cBladeDia / 2, -1]) {
-                cylinder(d = cBladeHoleDia, h = cBladeThick + 2, $fn=cRefine);
+                rotate([0, 0, 90]) {
+                    cylinder(d = cBladeHoleDia, h = cBladeThick + 2, $fn=6);
+                }
             }
         }
     }
@@ -43,10 +45,14 @@ module blade() {
 
 shaft();
 translate([0, cBladeOffset, 0]) {
-    blade();
+    rotate([cSweepAngle, 0, 0]) {
+        blade();
+    }
 }
 translate([0, -cBladeOffset, 0]) {
     rotate([0, 0, 180]) {
-        blade();
+        rotate([cSweepAngle, 0, 0]) {
+            blade();
+        }
     }
 }
