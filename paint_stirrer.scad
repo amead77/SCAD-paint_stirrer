@@ -10,7 +10,7 @@ cRefine = 32;
 
 /* [SHAFT] */
 // Shaft diameter, larger diameter will allow for more sweep angle on the blades
-cShaftDia = 8; 
+cShaftDia = 7.95; 
 // Shaft length, including the blades
 cShaftLen = 100; 
 
@@ -39,10 +39,18 @@ cRefineHole = 6;
 cBaseDia = 30; 
 // Base thickness, this is the height of the base just before the cone part
 cBaseThick = 3; 
-// Base sweep thickness, this is the total length of the cone part of the base
+// Base sweep thickness, this is the total length of the cone part of the base going up the shaft
 cBaseSweepThick = 20; 
 
-// Blade points
+/* [SHAFT RING] */
+//Shaft ring wanted? For instance to add as a bearing stop
+cShaftRing = true; //[true, false];
+// Shaft ring diameter
+cShaftRingDia = 10;
+// Shaft ring thickness
+cShaftRingThick = 2;
+
+// Blade points, this uses the above to create the blade shape
 cBladePoints = [
     [0, 0],
     [cBladeDia, 0],
@@ -82,6 +90,12 @@ module base() {
     }
 }
 
+module shaftRing() {
+    translate([0, 0, cBladeLen]) {
+        cylinder(d = cShaftRingDia, h = cShaftRingThick, $fn=cRefine);
+    }
+}
+
 // Main
 shaft();
 translate([0, cBladeOffset, 0]) {
@@ -97,3 +111,6 @@ translate([0, -cBladeOffset, 0]) {
     }
 }
 base();
+if (cShaftRing) {
+    shaftRing();
+}
