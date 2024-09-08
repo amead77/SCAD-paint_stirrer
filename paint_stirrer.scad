@@ -5,26 +5,39 @@
 
 // Variables
 
-// Shaft diameter
+// Shaft diameter, larger diameter will allow for more sweep angle on the blades
 cShaftDia = 8; 
 // Shaft length, including the blades
 cShaftLen = 100; 
-cBladeDia = 50; // Blade diameter
-cBladeThick = 5; // Blade thickness
-cBladeLen = 50; // Blade length
-cBladeHoleDia = 14; // Blade hole diameter
-cRefine = 32; // Refinement level
-cBladeOffset = 1; //to adjust for the blade position after rotation
-cSweepAngle = -3.5; // Sweep angle for the blade
-cBaseDia = 30; // Base diameter
-cBaseThick = 3; // Base thickness
-cBaseSweepThick = 20; // Base sweep thickness
+// Blade diameter, each. 2x blade dia will be the overall width of the paddle
+cBladeDia = 20; 
+// Blade thickness
+cBladeThick = 5; 
+// Blade length
+cBladeLen = 50; 
+// Blade hole diameter
+cBladeHoleDia = 14; 
+// Refinement level (for the renderer)
+cRefine = 32; 
+// Refinement level for the blade hole (use 6 for a hexagonal hole/easier printing)
+cRefineHole = 6;
+//to adjust for the blade position after rotation
+cBladeOffset = 1; 
+// Sweep angle for the blade
+cSweepAngle = -3.5; 
+// Base diameter
+cBaseDia = 30; 
+// Base thickness, this is the height of the base just before the cone part
+cBaseThick = 3; 
+// Base sweep thickness, this is the total length of the cone part of the base
+cBaseSweepThick = 20; 
+// Blade points
 cBladePoints = [
     [0, 0],
-    [cBladeLen, 0],
-    [cBladeLen, cBladeDia / 2],
-    [cBladeLen /2, cBladeDia],
-    [0, cBladeDia],
+    [cBladeDia, 0],
+    [cBladeDia, cBladeLen / 2],
+    [cBladeDia /2, cBladeLen],
+    [0, cBladeLen],
     [0, 0]
 ];
 // Functions
@@ -41,7 +54,7 @@ module blade() {
             }
             translate([cBladeLen / 2, cBladeDia / 2, -1]) {
                 rotate([0, 0, 90]) {
-                    cylinder(d = cBladeHoleDia, h = cBladeThick + 2, $fn=6);
+                    cylinder(d = cBladeHoleDia, h = cBladeThick + 2, $fn=cRefineHole);
                 }
             }
         }
